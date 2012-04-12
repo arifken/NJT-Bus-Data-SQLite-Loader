@@ -1,0 +1,208 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6B09F838153539DD001D8C63 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B09F837153539DD001D8C63 /* libsqlite3.dylib */; };
+		9BDBF85478269AD64D954570 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9BDBF85478269AD64D95456F /* main.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9BDBF85478269AD64D95456D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		6B09F837153539DD001D8C63 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		9BDBF85478269AD64D954566 /* BusDataLoader */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BusDataLoader; sourceTree = BUILT_PRODUCTS_DIR; };
+		9BDBF85478269AD64D95456F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		9BDBF85478269AD64D954571 /* BusDataLoader.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = BusDataLoader.1; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9BDBF85478269AD64D95456C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6B09F838153539DD001D8C63 /* libsqlite3.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9BDBF85478269AD64D954562 = {
+			isa = PBXGroup;
+			children = (
+				6B09F837153539DD001D8C63 /* libsqlite3.dylib */,
+				9BDBF85478269AD64D954563 /* Products */,
+				9BDBF85478269AD64D95456E /* BusDataLoader */,
+			);
+			sourceTree = "<group>";
+		};
+		9BDBF85478269AD64D954563 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9BDBF85478269AD64D954566 /* BusDataLoader */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9BDBF85478269AD64D95456E /* BusDataLoader */ = {
+			isa = PBXGroup;
+			children = (
+				9BDBF85478269AD64D954571 /* BusDataLoader.1 */,
+				9BDBF85478269AD64D95456F /* main.cpp */,
+			);
+			path = BusDataLoader;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9BDBF85478269AD64D954567 /* BusDataLoader */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9BDBF85478269AD64D954568 /* Build configuration list for PBXNativeTarget "BusDataLoader" */;
+			buildPhases = (
+				9BDBF85478269AD64D95456B /* Sources */,
+				9BDBF85478269AD64D95456C /* Frameworks */,
+				9BDBF85478269AD64D95456D /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BusDataLoader;
+			productName = BusDataLoader;
+			productReference = 9BDBF85478269AD64D954566 /* BusDataLoader */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9BDBF85478269AD64D954560 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 9BDBF85478269AD64D954561 /* Build configuration list for PBXProject "BusDataLoader" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 9BDBF85478269AD64D954562;
+			productRefGroup = 9BDBF85478269AD64D954563 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9BDBF85478269AD64D954567 /* BusDataLoader */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9BDBF85478269AD64D95456B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BDBF85478269AD64D954570 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		9BDBF85478269AD64D954564 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		9BDBF85478269AD64D954565 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		9BDBF85478269AD64D954569 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		9BDBF85478269AD64D95456A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9BDBF85478269AD64D954561 /* Build configuration list for PBXProject "BusDataLoader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9BDBF85478269AD64D954564 /* Release */,
+				9BDBF85478269AD64D954565 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9BDBF85478269AD64D954568 /* Build configuration list for PBXNativeTarget "BusDataLoader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9BDBF85478269AD64D954569 /* Release */,
+				9BDBF85478269AD64D95456A /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9BDBF85478269AD64D954560 /* Project object */;
+}
