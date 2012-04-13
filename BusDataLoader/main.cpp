@@ -72,10 +72,14 @@ shape_dist_traveled     real
  */
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
 #include <sqlite3.h>
 #include <dirent.h>
 #include <stdlib.h>
 #include <vector>
+#include <iterator>
 
 
 const char *fn_calendarDates = "calendar_dates.txt";
@@ -86,6 +90,7 @@ const char *fn_trips = "trips.txt";
 const char *fn_shapes = "shapes.txt";
 const char *fn_agency = "agency.txt";
 
+using namespace std;
 
 void usage() {
     std::cout << "\nUsage: $ ./loader [path to bus data directory] [output sqlite directory]\n";
@@ -134,7 +139,58 @@ int create_database(const char *path, sqlite3 **retDb) {
     }
 }
 
-int load_calendar_dates(const char *dir_path) {
+vector<string> split_line(string line) {
+    vector<string> ret;
+    char delim = ',';
+    stringstream ss(line);
+    string item;
+    while(std::getline(ss, item, delim)) {
+        ret.push_back(item);
+    }
+    return ret;
+}
+
+int load_calendar_dates(char const *dir_path, sqlite3 *db) {
+    std::string joined = std::string(dir_path);
+    joined.append("/").append(fn_calendarDates);
+
+    printf("\n Loading calendar_dates: %s", joined.c_str());
+
+    sqlite3_stmt *stmt;
+    ifstream file;
+    string line;
+    string sql;
+    int serviceId;
+    long date;
+    int exceptionType;
+    vector<string> comps;
+    file.open(joined.c_str());
+    if (file.is_open()) {
+        while (file.good()) {
+            getline(file, line);
+            comps = split_line(line);
+
+            if (comps.size() == 3) {
+                serviceId = atoi(comps.at(0).c_str());
+                date = atoi(comps.at(1).c_str());
+                exceptionType = atoi(comps.at(2).c_str());
+
+                sql = "INSERT INTO calendar_dates (service_id, date, exception_type) VALUES(";
+                sqlite3_prepare_v2(db, sql.c_str(), sql.length(), &stmt, NULL);
+                sqlite3_prepare
+                sqlite3_step(stmt);
+                sqlite3_free(stmt), stmt = NULL;
+
+
+                printf("\n  calender id %i, date %i, exception %i:",serviceId, date,exceptionType);
+            }
+
+        }
+    }
+
+    file.close();
+
+    return 0;
 
 }
 
@@ -163,13 +219,9 @@ int load_shapes(const char *path) {
 }
 
 
-
-int load_data(const char *dir_path, const char *db_path) {
-    std::string joined = std::string(dir_path);
-    joined.append("/").append(fn_calendarDates);
-
-    printf("\npath: %s", joined.c_str());
-
+int load_data(char const *dir_path, sqlite3 *db) {
+    load_calendar_dates(dir_path, db);
+    return 0;
 
 }
 
@@ -185,7 +237,7 @@ int main(int argc, const char *argv[]) {
 
     sqlite3 *db;
     create_database(db_path, &db);
-    load_data(dir_path, db_path);
+    load_data(dir_path, db);
 
     return 0;
 }

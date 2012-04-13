@@ -21,47 +21,46 @@
     <favorites_list name="BusDataLoader" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.39465308">
-      <split-first>
-        <leaf>
-          <file leaf-file-name="sqlite3.h" pinned="false" current="false" current-in-tab="false">
-            <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/sqlite3.h">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="2861" column="15" selection-start="140826" selection-end="140826" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="main.cpp" pinned="false" current="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/BusDataLoader/main.cpp">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="68" column="19" selection-start="1387" selection-end="1406" vertical-scroll-proportion="0.8493544">
-                  <folding>
-                    <element signature="e#1423#1442#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="main.cpp" pinned="false" current="true" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/BusDataLoader/main.cpp">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="170" column="14" selection-start="4296" selection-end="4296" vertical-scroll-proportion="1.9870875">
-                  <folding>
-                    <element signature="e#1423#1442#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf>
+      <file leaf-file-name="stdio.h" pinned="false" current="false" current-in-tab="false">
+        <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/stdio.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="448" column="8" selection-start="16623" selection-end="16623" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="istream.tcc" pinned="false" current="false" current-in-tab="false">
+        <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/c++/4.2.1/bits/istream.tcc">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="932" column="4" selection-start="26747" selection-end="26747" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="basic_string.h" pinned="false" current="false" current-in-tab="false">
+        <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/c++/4.2.1/bits/basic_string.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="2448" column="4" selection-start="91646" selection-end="91646" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.cpp" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/BusDataLoader/main.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="176" column="0" selection-start="4895" selection-end="4895" vertical-scroll-proportion="0.6312769">
+              <folding>
+                <element signature="e#1423#1442#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -109,16 +108,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="DirectoryView.Xcode">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BusDataLoader" />
-              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeDirectoryView$1$1" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -147,15 +136,25 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="DirectoryView.Xcode">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BusDataLoader" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeDirectoryView$1$1" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="options.lastSelected" value="editing.templates" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="editing.templates" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager" selected="Application.BusDataLoader">
     <configuration default="false" name="BusDataLoader" type="AppleRunConfiguration" factoryName="Application" temporary="true" SCHEME_NAME="BusDataLoader" PROJECT_NAME="BusDataLoader" TARGET_NAME="BusDataLoader" CONFIG_NAME="Debug" DESTINATION_ID="macos_x86_64" RUN_TARGET_PROJECT_NAME="BusDataLoader" RUN_TARGET_NAME="BusDataLoader" DEBUGGER="GDB" PROGRAM_PARAMS="$USER_HOME$/Desktop/bus_data /tmp/busdata.db" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
@@ -214,7 +213,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32962963" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32962963" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -280,14 +279,33 @@
   <component name="editorHistoryManager">
     <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/sqlite3.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2861" column="15" selection-start="140826" selection-end="140826" vertical-scroll-proportion="0.0">
+        <state line="2861" column="15" selection-start="140826" selection-end="140826" vertical-scroll-proportion="0.54949784" />
+      </provider>
+    </entry>
+    <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/stdio.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="448" column="8" selection-start="16623" selection-end="16623" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/c++/4.2.1/bits/istream.tcc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="932" column="4" selection-start="26747" selection-end="26747" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/c++/4.2.1/bits/basic_string.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2448" column="4" selection-start="91646" selection-end="91646" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/BusDataLoader/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="170" column="14" selection-start="4296" selection-end="4296" vertical-scroll-proportion="1.9870875">
+        <state line="176" column="0" selection-start="4895" selection-end="4895" vertical-scroll-proportion="0.6312769">
           <folding>
             <element signature="e#1423#1442#0" expanded="true" />
           </folding>
