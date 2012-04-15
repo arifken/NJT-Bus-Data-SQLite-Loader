@@ -97,7 +97,7 @@ void usage() {
 }
 
 int create_database(const char *path) {
-    printf("\ncreating database...");
+    printf("\ncreating database at %s",path);
     sqlite3 *db = NULL;
     int ok = 0;
 
@@ -112,7 +112,7 @@ int create_database(const char *path) {
 
                 "CREATE TABLE calendar_dates (id INTEGER PRIMARY KEY, service_id INTEGER, date INTEGER, exception_type INTEGER)",
 
-                "CREATE TABLE routes (route_id INTEGER PRIMARY KEY, agency_id INTEGER, rout_short_name TEXT, route_long_name TEXT, route_type INTEGER, route_url TEXT, route_color TEXT)",
+                "CREATE TABLE routes (route_id INTEGER PRIMARY KEY, agency_id INTEGER, route_short_name TEXT, route_long_name TEXT, route_type INTEGER, route_url TEXT, route_color TEXT)",
 
                 "CREATE TABLE stop_times (id INTEGER PRIMARY KEY, trip_id INTEGER, arrival_time TEXT, departure_time TEXT, stop_id INTEGER, stop_sequence INTEGER, pickup_type INTEGER, drop_off_type INTEGER, shape_dist_traveled REAL)",
 
@@ -123,7 +123,7 @@ int create_database(const char *path) {
                 "CREATE TABLE shapes (shape_id INTEGER PRIMARY KEY, shape_pt_lat REAL, shape_pt_lon REAL, shape_pt_sequence INTEGER, shape_dist_traveled REAL)",
         };
 
-        printf("\nnum statments: %i", numTables);
+        printf("\nCreated %i tables", numTables);
         for (int i = 0; i < numTables; i++) {
             sqlite3_prepare_v2(db, sql[i], strlen(sql[i]), &stmt, &pzTail);
             sqlite3_step(stmt);
@@ -174,7 +174,6 @@ int insert_data(string filePath, sqlite3 *db, string tableName, vector<string> *
 
     bool free_cols = false;
     if (!column_names) {
-        printf("\n getting col names from schema");
         column_names = new vector<string>();
         get_column_names(db, tableName, column_names, NULL);
     }
@@ -189,8 +188,9 @@ int insert_data(string filePath, sqlite3 *db, string tableName, vector<string> *
     int exceptionType;
     const char *pzTail;
     vector<string> comps;
-
     string colsArg;
+    string valsArg;
+
     unsigned long column_count = column_names->size();
     for (unsigned int i = 0; i < column_count; i++) {
         colsArg.append(column_names->at(i));
@@ -199,50 +199,64 @@ int insert_data(string filePath, sqlite3 *db, string tableName, vector<string> *
         }
     }
 
-    string valsArg;
-
-
     file.open(filePath.c_str());
 
     if (file.is_open()) {
-        vector<int> warningLines;
+        vector<string> warningLines;
         unsigned int lineCtr = 0;
+        int status;
+        char statusStr[1024];
+        const char *statusMsg;
         while (file.good()) {
             lineCtr++;
             getline(file, line);
-            comps = split_line(line);
 
-            valsArg.clear();
+            // the first line is a description of the fields, so start at line 2
+            if (lineCtr > 1 && line.length() > 0) {
+                comps = split_line(line);
+
+                valsArg.clear();
 
 
-            if (column_count == comps.size()) {
-                for (unsigned int i = 0; i < column_count; i++) {
-                    valsArg.append(comps.at(i));
-                    if (i < column_count - 1) {
-                        valsArg.append(", ");
+                if (column_count == comps.size()) {
+                    for (unsigned int i = 0; i < column_count; i++) {
+                        valsArg.append(comps.at(i));
+                        if (i < column_count - 1) {
+                            valsArg.append(", ");
+                        }
                     }
+                } else {
+                    sprintf(statusStr, "line %i: component count doesnt match column count", lineCtr);
+                    warningLines.push_back(statusStr);
                 }
-            } else {
-                warningLines.push_back(lineCtr);
+
+                sprintf(cSql, "INSERT INTO %s (%s) VALUES(%s)", tableName.c_str(), colsArg.c_str(), valsArg.c_str());
+
+                sql = string(cSql);
+//                printf("%s\n",cSql);
+                printf("Loading %s...................................%i\r", tableName.c_str(), lineCtr);
+                fflush(stdout);
+
+                sqlite3_prepare_v2(db, sql.c_str(), sql.length(), &stmt, &pzTail);
+                status = sqlite3_step(stmt);
+
+                if (status != SQLITE_OK && status < 100) {
+                    statusMsg = sqlite3_errmsg(db);
+                    int ln = lineCtr;
+                    sprintf(statusStr, "line %i: caught error %i: %s", ln, status, statusMsg);
+                    warningLines.push_back(string(statusStr));
+                }
             }
 
-            sprintf(cSql, "INSERT INTO %s (%s) VALUES(%s)", tableName.c_str(), colsArg.c_str(), valsArg.c_str());
-
-            sql = string(cSql);
-
-            printf("Loading %s........................%i\r", tableName.c_str(), lineCtr);
-            fflush(stdout);
-
-            sqlite3_prepare_v2(db, sql.c_str(), sql.length(), &stmt, &pzTail);
-            sqlite3_step(stmt);
         }
 
 
-        printf("\rLoading calendar_dates........................done\n");
+        printf("Loading %s...................................done\n",tableName.c_str());
 
         for (int j = 0; j < warningLines.size(); j++) {
-            printf("\n WARN: line %i could not be loaded.",warningLines.at(j));
+            printf("    WARN: %s\n",warningLines.at(j).c_str());
         }
+        printf("\n");
     }
 
     if (free_cols) {
@@ -259,8 +273,6 @@ int load_calendar_dates(char const *dir_path, sqlite3 *db) {
     std::string joined = std::string(dir_path);
     joined.append("/").append(fn_calendarDates);
 
-    printf("\n Loading calendar_dates: %s", joined.c_str());
-
     vector<string> *cols = new vector<string>();
     cols->push_back("service_id");
     cols->push_back("date");
@@ -271,30 +283,44 @@ int load_calendar_dates(char const *dir_path, sqlite3 *db) {
     delete cols;
 
     return 0;
+}
+
+int load_routes(char const *dir_path, sqlite3 *db) {
+    std::string joined = std::string(dir_path);
+    joined.append("/").append(fn_routes);
+
+    vector<string> *cols = new vector<string>();
+    cols->push_back("route_id");
+    cols->push_back("agency_id");
+    cols->push_back("route_short_name");
+    cols->push_back("route_long_name");
+    cols->push_back("route_type");
+    cols->push_back("route_url");
+
+    insert_data(joined, db, "routes", cols);
+
+    delete cols;
+
+    return 0;
+}
+
+int load_stop_times(char const *dir_path, sqlite3 *db) {
 
 }
 
-int load_routes(const char *path) {
+int load_stops(char const *dir_path, sqlite3 *db) {
 
 }
 
-int load_stop_times(const char *path) {
+int load_trips(char const *dir_path, sqlite3 *db) {
 
 }
 
-int load_stops(const char *path) {
+int load_agencies(char const *dir_path, sqlite3 *db) {
 
 }
 
-int load_trips(const char *path) {
-
-}
-
-int load_agencies(const char *path) {
-
-}
-
-int load_shapes(const char *path) {
+int load_shapes(char const *dir_path, sqlite3 *db) {
 
 }
 
@@ -303,7 +329,11 @@ int load_data(char const *dir_path, char const *db_path) {
 
     sqlite3 *db;
     sqlite3_open(db_path, &db);
+    printf("\n\n");
+
     load_calendar_dates(dir_path, db);
+    load_routes(dir_path, db);
+
     sqlite3_close(db);
     return 0;
 
