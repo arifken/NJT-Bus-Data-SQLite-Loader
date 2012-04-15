@@ -96,14 +96,14 @@ void usage() {
     std::cout << "\nUsage: $ ./loader [path to bus data directory] [output sqlite directory]\n";
 }
 
-int create_database(const char *path, sqlite3 **retDb) {
+int create_database(const char *path) {
     printf("\ncreating database...");
     sqlite3 *db = NULL;
     int ok = 0;
 
     ok = sqlite3_open(path, &db);
     if (ok == SQLITE_OK) {
-        sqlite3_stmt *stmt;
+        sqlite3_stmt *stmt = NULL;
         const char *pzTail;
 
         int numTables = 7;
@@ -127,16 +127,12 @@ int create_database(const char *path, sqlite3 **retDb) {
         for (int i = 0; i < numTables; i++) {
             sqlite3_prepare_v2(db, sql[i], strlen(sql[i]), &stmt, &pzTail);
             sqlite3_step(stmt);
-            sqlite3_free(stmt), stmt = NULL;
         }
 
     }
 
     sqlite3_close(db);
 
-    if (retDb != NULL) {
-        *retDb = db;
-    }
 }
 
 vector<string> split_line(string line) {
@@ -144,11 +140,120 @@ vector<string> split_line(string line) {
     char delim = ',';
     stringstream ss(line);
     string item;
-    while(std::getline(ss, item, delim)) {
+    while (std::getline(ss, item, delim)) {
         ret.push_back(item);
     }
     return ret;
 }
+
+void get_column_names(sqlite3 *db, string tableName, vector<string> *colNames, int *columnCount) {
+    char c_sql[1024];
+    sprintf(c_sql, "select * from %s", tableName.c_str());
+    string sql = string(c_sql);
+    sqlite3_stmt *stmt = NULL;
+    sqlite3_prepare_v2(db, sql.c_str(), sql.length(), &stmt, NULL);
+
+    int ct = sqlite3_column_count(stmt);
+
+    if (columnCount != NULL) {
+        *columnCount = ct;
+    }
+
+    vector<string> names;
+    for (int i = 0; i < ct; i++) {
+        names.push_back(sqlite3_column_name(stmt, i));
+    }
+
+    if (colNames != NULL) {
+        *colNames = names;
+    }
+}
+
+
+int insert_data(string filePath, sqlite3 *db, string tableName, vector<string> *column_names) {
+
+    bool free_cols = false;
+    if (!column_names) {
+        printf("\n getting col names from schema");
+        column_names = new vector<string>();
+        get_column_names(db, tableName, column_names, NULL);
+    }
+
+    sqlite3_stmt *stmt = NULL;
+    ifstream file;
+    string line;
+    char cSql[1024];
+    string sql;
+    int serviceId;
+    long date;
+    int exceptionType;
+    const char *pzTail;
+    vector<string> comps;
+
+    string colsArg;
+    unsigned long column_count = column_names->size();
+    for (unsigned int i = 0; i < column_count; i++) {
+        colsArg.append(column_names->at(i));
+        if (i < column_count - 1) {
+            colsArg.append(", ");
+        }
+    }
+
+    string valsArg;
+
+
+    file.open(filePath.c_str());
+
+    if (file.is_open()) {
+        vector<int> warningLines;
+        unsigned int lineCtr = 0;
+        while (file.good()) {
+            lineCtr++;
+            getline(file, line);
+            comps = split_line(line);
+
+            valsArg.clear();
+
+
+            if (column_count == comps.size()) {
+                for (unsigned int i = 0; i < column_count; i++) {
+                    valsArg.append(comps.at(i));
+                    if (i < column_count - 1) {
+                        valsArg.append(", ");
+                    }
+                }
+            } else {
+                warningLines.push_back(lineCtr);
+            }
+
+            sprintf(cSql, "INSERT INTO %s (%s) VALUES(%s)", tableName.c_str(), colsArg.c_str(), valsArg.c_str());
+
+            sql = string(cSql);
+
+            printf("Loading %s........................%i\r", tableName.c_str(), lineCtr);
+            fflush(stdout);
+
+            sqlite3_prepare_v2(db, sql.c_str(), sql.length(), &stmt, &pzTail);
+            sqlite3_step(stmt);
+        }
+
+
+        printf("\rLoading calendar_dates........................done\n");
+
+        for (int j = 0; j < warningLines.size(); j++) {
+            printf("\n WARN: line %i could not be loaded.",warningLines.at(j));
+        }
+    }
+
+    if (free_cols) {
+        delete column_names;
+    }
+
+    file.close();
+
+    return 0;
+}
+
 
 int load_calendar_dates(char const *dir_path, sqlite3 *db) {
     std::string joined = std::string(dir_path);
@@ -156,39 +261,14 @@ int load_calendar_dates(char const *dir_path, sqlite3 *db) {
 
     printf("\n Loading calendar_dates: %s", joined.c_str());
 
-    sqlite3_stmt *stmt;
-    ifstream file;
-    string line;
-    string sql;
-    int serviceId;
-    long date;
-    int exceptionType;
-    vector<string> comps;
-    file.open(joined.c_str());
-    if (file.is_open()) {
-        while (file.good()) {
-            getline(file, line);
-            comps = split_line(line);
+    vector<string> *cols = new vector<string>();
+    cols->push_back("service_id");
+    cols->push_back("date");
+    cols->push_back("exception_type");
 
-            if (comps.size() == 3) {
-                serviceId = atoi(comps.at(0).c_str());
-                date = atoi(comps.at(1).c_str());
-                exceptionType = atoi(comps.at(2).c_str());
+    insert_data(joined, db, "calendar_dates", cols);
 
-                sql = "INSERT INTO calendar_dates (service_id, date, exception_type) VALUES(";
-                sqlite3_prepare_v2(db, sql.c_str(), sql.length(), &stmt, NULL);
-                sqlite3_prepare
-                sqlite3_step(stmt);
-                sqlite3_free(stmt), stmt = NULL;
-
-
-                printf("\n  calender id %i, date %i, exception %i:",serviceId, date,exceptionType);
-            }
-
-        }
-    }
-
-    file.close();
+    delete cols;
 
     return 0;
 
@@ -219,10 +299,28 @@ int load_shapes(const char *path) {
 }
 
 
-int load_data(char const *dir_path, sqlite3 *db) {
+int load_data(char const *dir_path, char const *db_path) {
+
+    sqlite3 *db;
+    sqlite3_open(db_path, &db);
     load_calendar_dates(dir_path, db);
+    sqlite3_close(db);
     return 0;
 
+}
+
+void clear_old_database(char const *dbPath) {
+    ifstream oldDb;
+    bool exists = false;
+    oldDb.open(dbPath);
+    if (oldDb.good()) {
+        exists = true;
+    }
+    oldDb.close();
+
+    if (exists) {
+        remove(dbPath);
+    }
 }
 
 int main(int argc, const char *argv[]) {
@@ -235,9 +333,9 @@ int main(int argc, const char *argv[]) {
     const char *dir_path = argv[1];
     const char *db_path = argv[2];
 
-    sqlite3 *db;
-    create_database(db_path, &db);
-    load_data(dir_path, db);
+    clear_old_database(db_path);
+    create_database(db_path);
+    load_data(dir_path, db_path);
 
     return 0;
 }
