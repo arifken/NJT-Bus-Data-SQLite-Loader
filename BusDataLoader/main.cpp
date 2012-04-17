@@ -18,7 +18,7 @@ int main(int argc, const char *argv[]) {
     BusDataLoader *loader = new BusDataLoader();
 
     loader->clear_old_database(db_path);
-    loader->create_database(db_path);
+    loader->create_database(db_path, NULL);
     loader->load_data(dir_path, db_path);
 
     delete loader;

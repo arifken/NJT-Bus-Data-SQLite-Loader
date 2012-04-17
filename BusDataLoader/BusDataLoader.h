@@ -27,8 +27,7 @@ class BusDataLoader {
 
     void clear_old_database(char const *dbPath);
 
-    int create_database(const char *path);
-
+    int create_database(char const *path, const char **error_msg);
 
     private:
 

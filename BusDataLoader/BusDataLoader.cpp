@@ -93,13 +93,13 @@ const char *fn_agency = "agency.txt";
 using namespace std;
 
 
-int BusDataLoader::create_database(const char *path) {
+int BusDataLoader::create_database(char const *path, const char **error_msg) {
     printf("\ncreating database at %s", path);
     sqlite3 *db = NULL;
-    int ok = 0;
+    int status = 0;
 
-    ok = sqlite3_open(path, &db);
-    if (ok == SQLITE_OK) {
+    status = sqlite3_open(path, &db);
+    if (status == SQLITE_OK) {
         sqlite3_stmt *stmt = NULL;
         const char *pzTail;
 
@@ -120,18 +120,41 @@ int BusDataLoader::create_database(const char *path) {
                 "CREATE TABLE shapes (id INTEGER PRIMARY KEY, shape_id INTEGER, shape_pt_lat REAL, shape_pt_lon REAL, shape_pt_sequence INTEGER, shape_dist_traveled REAL)",
         };
 
-        printf("\nCreated %i tables", numTables);
+//        printf("\ncurr status = %i",status);
+        printf("\nCreating %i tables", numTables);
         for (int i = 0; i < numTables; i++) {
             sqlite3_prepare_v2(db, sql[i], strlen(sql[i]), &stmt, &pzTail);
-            sqlite3_step(stmt);
+            status = sqlite3_step(stmt);
+            sqlite3_finalize(stmt);
+//            printf("\nstatus at %i: %i",i,status);
+            const char *error = sqlite3_errmsg(db);
+
+            if (error_msg != NULL) {
+               *error_msg = error;
+            }
         }
 
     }
 
     sqlite3_close(db);
 
-    return 0;
+    return status;
 }
+
+void BusDataLoader::clear_old_database(char const *dbPath) {
+    ifstream oldDb;
+    bool exists = false;
+    oldDb.open(dbPath);
+    if (oldDb.good()) {
+        exists = true;
+    }
+    oldDb.close();
+
+    if (exists) {
+        remove(dbPath);
+    }
+}
+
 
 /*!
  * CSV parser function borrowed from http://www.zedwood.com/article/112/cpp-csv-parser
@@ -219,6 +242,7 @@ int BusDataLoader::insert_data(string filePath, sqlite3 *db, string tableName, v
         get_column_names(db, tableName, column_names, NULL);
     }
 
+    int retStatus = 0;
     sqlite3_stmt *stmt = NULL;
     ifstream file;
     string line;
@@ -287,8 +311,10 @@ int BusDataLoader::insert_data(string filePath, sqlite3 *db, string tableName, v
 
                     sqlite3_prepare_v2(db, sql.c_str(), sql.length(), &stmt, &pzTail);
                     status = sqlite3_step(stmt);
+                    sqlite3_finalize(stmt);
 
                     if (status != SQLITE_OK && status < 100) {
+                        retStatus = 1;
                         statusMsg = sqlite3_errmsg(db);
                         int ln = lineCtr;
                         sprintf(statusStr, "line %i: caught error %i: %s", ln, status, statusMsg);
@@ -317,7 +343,7 @@ int BusDataLoader::insert_data(string filePath, sqlite3 *db, string tableName, v
 
     file.close();
 
-    return 0;
+    return retStatus;
 }
 
 
@@ -325,12 +351,14 @@ int BusDataLoader::load_calendar_dates(char const *dir_path, sqlite3 *db) {
     std::string joined = std::string(dir_path);
     joined.append("/").append(fn_calendarDates);
 
+    int status = 0;
+
     vector<string> *cols = new vector<string>();
     cols->push_back("service_id");
     cols->push_back("date");
     cols->push_back("exception_type");
 
-    insert_data(joined, db, "calendar_dates", cols);
+    status = insert_data(joined, db, "calendar_dates", cols);
 
     delete cols;
 
@@ -341,6 +369,8 @@ int BusDataLoader::load_routes(char const *dir_path, sqlite3 *db) {
     std::string joined = std::string(dir_path);
     joined.append("/").append(fn_routes);
 
+    int status = 0;
+
     vector<string> *cols = new vector<string>();
     cols->push_back("route_id");
     cols->push_back("agency_id");
@@ -350,7 +380,7 @@ int BusDataLoader::load_routes(char const *dir_path, sqlite3 *db) {
     cols->push_back("route_url");
     cols->push_back("route_color");
 
-    insert_data(joined, db, "routes", cols);
+    status = insert_data(joined, db, "routes", cols);
 
     delete cols;
 
@@ -360,6 +390,8 @@ int BusDataLoader::load_routes(char const *dir_path, sqlite3 *db) {
 int BusDataLoader::load_stop_times(char const *dir_path, sqlite3 *db) {
     std::string joined = std::string(dir_path);
     joined.append("/").append(fn_stopTimes);
+
+    int status = 0;
 
     vector<string> *cols = new vector<string>();
     cols->push_back("trip_id");
@@ -371,7 +403,7 @@ int BusDataLoader::load_stop_times(char const *dir_path, sqlite3 *db) {
     cols->push_back("drop_off_type");
     cols->push_back("shape_dist_traveled");
 
-    insert_data(joined, db, "stop_times", cols);
+    status = insert_data(joined, db, "stop_times", cols);
 
     delete cols;
 
@@ -382,6 +414,8 @@ int BusDataLoader::load_stops(char const *dir_path, sqlite3 *db) {
     std::string joined = std::string(dir_path);
     joined.append("/").append(fn_stops);
 
+    int status = 0;
+
     vector<string> *cols = new vector<string>();
     cols->push_back("stop_id");
     cols->push_back("stop_code");
@@ -391,7 +425,7 @@ int BusDataLoader::load_stops(char const *dir_path, sqlite3 *db) {
     cols->push_back("stop_lon");
     cols->push_back("zone_id");
 
-    insert_data(joined, db, "stops", cols);
+    status = insert_data(joined, db, "stops", cols);
 
     delete cols;
 
@@ -402,6 +436,8 @@ int BusDataLoader::load_trips(char const *dir_path, sqlite3 *db) {
     std::string joined = std::string(dir_path);
     joined.append("/").append(fn_trips);
 
+    int status = 0;
+
     vector<string> *cols = new vector<string>();
     cols->push_back("trip_id");
     cols->push_back("route_id");
@@ -411,7 +447,7 @@ int BusDataLoader::load_trips(char const *dir_path, sqlite3 *db) {
     cols->push_back("block_id");
     cols->push_back("shape_id");
 
-    insert_data(joined, db, "trips", cols);
+    status = insert_data(joined, db, "trips", cols);
 
     delete cols;
 
@@ -422,6 +458,8 @@ int BusDataLoader::load_agencies(char const *dir_path, sqlite3 *db) {
     std::string joined = std::string(dir_path);
     joined.append("/").append(fn_agency);
 
+    int status = 0;
+
     vector<string> *cols = new vector<string>();
     cols->push_back("agency_id");
     cols->push_back("agency_name");
@@ -430,7 +468,7 @@ int BusDataLoader::load_agencies(char const *dir_path, sqlite3 *db) {
     cols->push_back("agency_lang");
     cols->push_back("agency_phone");
 
-    insert_data(joined, db, "agencies", cols);
+    status = insert_data(joined, db, "agencies", cols);
 
     delete cols;
 
@@ -441,6 +479,8 @@ int BusDataLoader::load_shapes(char const *dir_path, sqlite3 *db) {
     std::string joined = std::string(dir_path);
     joined.append("/").append(fn_shapes);
 
+    int status = 0;
+
     vector<string> *cols = new vector<string>();
     cols->push_back("shape_id");
     cols->push_back("shape_pt_lat");
@@ -448,11 +488,11 @@ int BusDataLoader::load_shapes(char const *dir_path, sqlite3 *db) {
     cols->push_back("shape_pt_sequence");
     cols->push_back("shape_dist_traveled");
 
-    insert_data(joined, db, "shapes", cols);
+    status = insert_data(joined, db, "shapes", cols);
 
     delete cols;
 
-    return 0;
+    return status;
 }
 
 
@@ -462,30 +502,25 @@ int BusDataLoader::load_data(char const *dir_path, char const *db_path) {
     sqlite3_open(db_path, &db);
     printf("\n\n");
 
-    load_calendar_dates(dir_path, db);
-    load_routes(dir_path, db);
-    load_stops(dir_path, db);
-    load_trips(dir_path, db);
-    load_agencies(dir_path, db);
-    load_shapes(dir_path, db);
-    load_stop_times(dir_path, db);
+    int status = 0;
+
+    int failureCt = 0;
+    
+    failureCt += load_calendar_dates(dir_path, db);
+    failureCt += load_routes(dir_path, db);
+    failureCt += load_stops(dir_path, db);
+    failureCt += load_trips(dir_path, db);
+    failureCt += load_agencies(dir_path, db);
+    failureCt += load_shapes(dir_path, db);
+    failureCt += load_stop_times(dir_path, db);
 
     sqlite3_close(db);
-    return 0;
+
+    if (failureCt != 0) {
+        status = 1;
+    }
+    return status;
 
 }
 
-void BusDataLoader::clear_old_database(char const *dbPath) {
-    ifstream oldDb;
-    bool exists = false;
-    oldDb.open(dbPath);
-    if (oldDb.good()) {
-        exists = true;
-    }
-    oldDb.close();
-
-    if (exists) {
-        remove(dbPath);
-    }
-}
 

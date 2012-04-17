@@ -8,12 +8,39 @@
 
 /* Begin PBXBuildFile section */
 		6B09F838153539DD001D8C63 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B09F837153539DD001D8C63 /* libsqlite3.dylib */; };
+		6B4F7D5F153CC6EF008414AB /* trips.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9BDBF85478269AD64D954582 /* trips.txt */; };
+		6B4F7D60153CC6EF008414AB /* stops.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9BDBF85478269AD64D954581 /* stops.txt */; };
+		6B4F7D61153CC6EF008414AB /* stop_times.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9BDBF85478269AD64D954580 /* stop_times.txt */; };
+		6B4F7D62153CC6EF008414AB /* shapes.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9BDBF85478269AD64D95457F /* shapes.txt */; };
+		6B4F7D63153CC6EF008414AB /* routes.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9BDBF85478269AD64D95457E /* routes.txt */; };
+		6B4F7D64153CC6EF008414AB /* calendar_dates.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9BDBF85478269AD64D95457D /* calendar_dates.txt */; };
+		6B4F7D65153CC6EF008414AB /* agency.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9BDBF85478269AD64D95457C /* agency.txt */; };
+		6BEBEE40153BB90100D3F83B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BEBEE3F153BB90100D3F83B /* main.cpp */; };
+		6BEBEE57153BBB3600D3F83B /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BDBF85478269AD64D954579 /* libgtest.a */; };
+		6BEBEE60153C397900D3F83B /* BusDataLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9BDBF85478269AD64D954572 /* BusDataLoader.cpp */; };
+		6BEBEE61153C39D100D3F83B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B09F837153539DD001D8C63 /* libsqlite3.dylib */; };
 		9BDBF85478269AD64D954570 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9BDBF85478269AD64D95456F /* main.cpp */; };
 		9BDBF85478269AD64D954573 /* BusDataLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9BDBF85478269AD64D954572 /* BusDataLoader.cpp */; };
 		9BDBF85478269AD64D954576 /* BusDataTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9BDBF85478269AD64D954575 /* BusDataTests.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		6BEBEE3A153BB90100D3F83B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = TestResources;
+			dstSubfolderSpec = 16;
+			files = (
+				6B4F7D5F153CC6EF008414AB /* trips.txt in CopyFiles */,
+				6B4F7D60153CC6EF008414AB /* stops.txt in CopyFiles */,
+				6B4F7D61153CC6EF008414AB /* stop_times.txt in CopyFiles */,
+				6B4F7D62153CC6EF008414AB /* shapes.txt in CopyFiles */,
+				6B4F7D63153CC6EF008414AB /* routes.txt in CopyFiles */,
+				6B4F7D64153CC6EF008414AB /* calendar_dates.txt in CopyFiles */,
+				6B4F7D65153CC6EF008414AB /* agency.txt in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9BDBF85478269AD64D95456D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -27,6 +54,9 @@
 
 /* Begin PBXFileReference section */
 		6B09F837153539DD001D8C63 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		6BEBEE3C153BB90100D3F83B /* UnitTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTests; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BEBEE3F153BB90100D3F83B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		6BEBEE41153BB90100D3F83B /* UnitTests.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = UnitTests.1; sourceTree = "<group>"; };
 		9BDBF85478269AD64D954566 /* BusDataLoader */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BusDataLoader; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BDBF85478269AD64D95456F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		9BDBF85478269AD64D954571 /* BusDataLoader.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = BusDataLoader.1; sourceTree = "<group>"; };
@@ -34,9 +64,26 @@
 		9BDBF85478269AD64D954574 /* BusDataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusDataLoader.h; sourceTree = "<group>"; };
 		9BDBF85478269AD64D954575 /* BusDataTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BusDataTests.cpp; sourceTree = "<group>"; };
 		9BDBF85478269AD64D954577 /* BusDataTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusDataTests.h; sourceTree = "<group>"; };
+		9BDBF85478269AD64D954579 /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgtest.a; sourceTree = "<group>"; };
+		9BDBF85478269AD64D95457C /* agency.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = agency.txt; sourceTree = "<group>"; };
+		9BDBF85478269AD64D95457D /* calendar_dates.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = calendar_dates.txt; sourceTree = "<group>"; };
+		9BDBF85478269AD64D95457E /* routes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = routes.txt; sourceTree = "<group>"; };
+		9BDBF85478269AD64D95457F /* shapes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = shapes.txt; sourceTree = "<group>"; };
+		9BDBF85478269AD64D954580 /* stop_times.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = stop_times.txt; sourceTree = "<group>"; };
+		9BDBF85478269AD64D954581 /* stops.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = stops.txt; sourceTree = "<group>"; };
+		9BDBF85478269AD64D954582 /* trips.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = trips.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6BEBEE39153BB90100D3F83B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6BEBEE57153BBB3600D3F83B /* libgtest.a in Frameworks */,
+				6BEBEE61153C39D100D3F83B /* libsqlite3.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9BDBF85478269AD64D95456C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -48,10 +95,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6BEBEE3E153BB90100D3F83B /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				9BDBF85478269AD64D954577 /* BusDataTests.h */,
+				9BDBF85478269AD64D954575 /* BusDataTests.cpp */,
+				6BEBEE3F153BB90100D3F83B /* main.cpp */,
+				6BEBEE41153BB90100D3F83B /* UnitTests.1 */,
+				9BDBF85478269AD64D954578 /* lib */,
+				9BDBF85478269AD64D95457A /* res */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
 		9BDBF85478269AD64D954562 = {
 			isa = PBXGroup;
 			children = (
 				6B09F837153539DD001D8C63 /* libsqlite3.dylib */,
+				6BEBEE3E153BB90100D3F83B /* UnitTests */,
 				9BDBF85478269AD64D954563 /* Products */,
 				9BDBF85478269AD64D95456E /* BusDataLoader */,
 			);
@@ -61,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				9BDBF85478269AD64D954566 /* BusDataLoader */,
+				6BEBEE3C153BB90100D3F83B /* UnitTests */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -68,8 +130,6 @@
 		9BDBF85478269AD64D95456E /* BusDataLoader */ = {
 			isa = PBXGroup;
 			children = (
-				9BDBF85478269AD64D954577 /* BusDataTests.h */,
-				9BDBF85478269AD64D954575 /* BusDataTests.cpp */,
 				9BDBF85478269AD64D954574 /* BusDataLoader.h */,
 				9BDBF85478269AD64D954572 /* BusDataLoader.cpp */,
 				9BDBF85478269AD64D954571 /* BusDataLoader.1 */,
@@ -78,9 +138,56 @@
 			path = BusDataLoader;
 			sourceTree = "<group>";
 		};
+		9BDBF85478269AD64D954578 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				9BDBF85478269AD64D954579 /* libgtest.a */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		9BDBF85478269AD64D95457A /* res */ = {
+			isa = PBXGroup;
+			children = (
+				9BDBF85478269AD64D95457B /* testdata */,
+			);
+			path = res;
+			sourceTree = "<group>";
+		};
+		9BDBF85478269AD64D95457B /* testdata */ = {
+			isa = PBXGroup;
+			children = (
+				9BDBF85478269AD64D954582 /* trips.txt */,
+				9BDBF85478269AD64D954581 /* stops.txt */,
+				9BDBF85478269AD64D954580 /* stop_times.txt */,
+				9BDBF85478269AD64D95457F /* shapes.txt */,
+				9BDBF85478269AD64D95457E /* routes.txt */,
+				9BDBF85478269AD64D95457D /* calendar_dates.txt */,
+				9BDBF85478269AD64D95457C /* agency.txt */,
+			);
+			path = testdata;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6BEBEE3B153BB90100D3F83B /* UnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6BEBEE45153BB90100D3F83B /* Build configuration list for PBXNativeTarget "UnitTests" */;
+			buildPhases = (
+				6BEBEE38153BB90100D3F83B /* Sources */,
+				6BEBEE39153BB90100D3F83B /* Frameworks */,
+				6BEBEE3A153BB90100D3F83B /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UnitTests;
+			productName = UnitTests;
+			productReference = 6BEBEE3C153BB90100D3F83B /* UnitTests */;
+			productType = "com.apple.product-type.tool";
+		};
 		9BDBF85478269AD64D954567 /* BusDataLoader */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9BDBF85478269AD64D954568 /* Build configuration list for PBXNativeTarget "BusDataLoader" */;
@@ -116,24 +223,58 @@
 			projectRoot = "";
 			targets = (
 				9BDBF85478269AD64D954567 /* BusDataLoader */,
+				6BEBEE3B153BB90100D3F83B /* UnitTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6BEBEE38153BB90100D3F83B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6BEBEE40153BB90100D3F83B /* main.cpp in Sources */,
+				9BDBF85478269AD64D954576 /* BusDataTests.cpp in Sources */,
+				6BEBEE60153C397900D3F83B /* BusDataLoader.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9BDBF85478269AD64D95456B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				9BDBF85478269AD64D954570 /* main.cpp in Sources */,
 				9BDBF85478269AD64D954573 /* BusDataLoader.cpp in Sources */,
-				9BDBF85478269AD64D954576 /* BusDataTests.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		6BEBEE43153BB90100D3F83B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/UnitTests/lib\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/UnitTests/inc\"";
+			};
+			name = Release;
+		};
+		6BEBEE44153BB90100D3F83B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/UnitTests/lib\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/UnitTests/inc\"";
+			};
+			name = Debug;
+		};
 		9BDBF85478269AD64D954564 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -182,6 +323,7 @@
 		9BDBF85478269AD64D954569 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -189,6 +331,7 @@
 		9BDBF85478269AD64D95456A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -196,6 +339,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6BEBEE45153BB90100D3F83B /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6BEBEE43153BB90100D3F83B /* Release */,
+				6BEBEE44153BB90100D3F83B /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		9BDBF85478269AD64D954561 /* Build configuration list for PBXProject "BusDataLoader" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
