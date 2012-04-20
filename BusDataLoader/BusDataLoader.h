@@ -49,7 +49,7 @@ class BusDataLoader {
 
     int load_trips(char const *dir_path, sqlite3 *db);
 
-    int load_agencies(char const *dir_path, sqlite3 *db);
+    int load_agency(char const *dir_path, sqlite3 *db);
 
     int load_shapes(char const *dir_path, sqlite3 *db);
 

@@ -59,7 +59,7 @@ block_id            text
 shape_id            integer
 
 
-agencies
+agency
 -------
 agency_id           integer (pk)
 agency_name         text
@@ -105,19 +105,19 @@ int BusDataLoader::create_database(char const *path, const char **error_msg) {
 
         int numTables = 7;
         char const *sql[] = {
-                "CREATE TABLE agencies (id INTEGER PRIMARY KEY, agency_id INTEGER, agency_name TEXT, agency_url TEXT, agency_timezone TEXT, agency_lang TEXT, agency_phone TEXT)",
+                "CREATE TABLE agency (id INTEGER PRIMARY KEY, agency_id INTEGER, agency_name TEXT, agency_url TEXT, agency_timezone TEXT, agency_lang TEXT, agency_phone TEXT)",
 
-                "CREATE TABLE calendar_dates (id INTEGER PRIMARY KEY, service_id INTEGER, date INTEGER, exception_type INTEGER)",
+                "CREATE TABLE calendar_date (id INTEGER PRIMARY KEY, service_id INTEGER, date INTEGER, exception_type INTEGER)",
 
-                "CREATE TABLE routes (id INTEGER PRIMARY KEY, route_id INTEGER, agency_id INTEGER, route_short_name TEXT, route_long_name TEXT, route_type INTEGER, route_url TEXT, route_color TEXT)",
+                "CREATE TABLE route (id INTEGER PRIMARY KEY, route_id INTEGER, agency_id INTEGER, route_short_name TEXT, route_long_name TEXT, route_type INTEGER, route_url TEXT, route_color TEXT)",
 
-                "CREATE TABLE stop_times (id INTEGER PRIMARY KEY, trip_id INTEGER, arrival_time TEXT, departure_time TEXT, stop_id INTEGER, stop_sequence INTEGER, pickup_type INTEGER, drop_off_type INTEGER, shape_dist_traveled REAL)",
+                "CREATE TABLE stop_time (id INTEGER PRIMARY KEY, trip_id INTEGER, arrival_time TEXT, departure_time TEXT, stop_id INTEGER, stop_sequence INTEGER, pickup_type INTEGER, drop_off_type INTEGER, shape_dist_traveled REAL)",
 
-                "CREATE TABLE stops (id INTEGER PRIMARY KEY, stop_id INTEGER, stop_code INTEGER, stop_name TEXT, stop_desc TEXT, stop_lat REAL, stop_lon REAL, zone_id INTEGER)",
+                "CREATE TABLE stop (id INTEGER PRIMARY KEY, stop_id INTEGER, stop_code INTEGER, stop_name TEXT, stop_desc TEXT, stop_lat REAL, stop_lon REAL, zone_id INTEGER)",
 
-                "CREATE TABLE trips (id INTEGER PRIMARY KEY, trip_id INTEGER, route_id INTEGER, service_id INTEGER, trip_headsign TEXT, direction_id INTEGER, block_id TEXT, shape_id INTEGER)",
+                "CREATE TABLE trip (id INTEGER PRIMARY KEY, route_id INTEGER, service_id INTEGER, trip_id INTEGER, trip_headsign TEXT, direction_id INTEGER, block_id TEXT, shape_id INTEGER)",
 
-                "CREATE TABLE shapes (id INTEGER PRIMARY KEY, shape_id INTEGER, shape_pt_lat REAL, shape_pt_lon REAL, shape_pt_sequence INTEGER, shape_dist_traveled REAL)",
+                "CREATE TABLE shape (id INTEGER PRIMARY KEY, shape_id INTEGER, shape_pt_lat REAL, shape_pt_lon REAL, shape_pt_sequence INTEGER, shape_dist_traveled REAL)",
         };
 
 //        printf("\ncurr status = %i",status);
@@ -358,7 +358,7 @@ int BusDataLoader::load_calendar_dates(char const *dir_path, sqlite3 *db) {
     cols->push_back("date");
     cols->push_back("exception_type");
 
-    status = insert_data(joined, db, "calendar_dates", cols);
+    status = insert_data(joined, db, "calendar_date", cols);
 
     delete cols;
 
@@ -380,7 +380,7 @@ int BusDataLoader::load_routes(char const *dir_path, sqlite3 *db) {
     cols->push_back("route_url");
     cols->push_back("route_color");
 
-    status = insert_data(joined, db, "routes", cols);
+    status = insert_data(joined, db, "route", cols);
 
     delete cols;
 
@@ -403,7 +403,7 @@ int BusDataLoader::load_stop_times(char const *dir_path, sqlite3 *db) {
     cols->push_back("drop_off_type");
     cols->push_back("shape_dist_traveled");
 
-    status = insert_data(joined, db, "stop_times", cols);
+    status = insert_data(joined, db, "stop_time", cols);
 
     delete cols;
 
@@ -425,7 +425,7 @@ int BusDataLoader::load_stops(char const *dir_path, sqlite3 *db) {
     cols->push_back("stop_lon");
     cols->push_back("zone_id");
 
-    status = insert_data(joined, db, "stops", cols);
+    status = insert_data(joined, db, "stop", cols);
 
     delete cols;
 
@@ -439,22 +439,22 @@ int BusDataLoader::load_trips(char const *dir_path, sqlite3 *db) {
     int status = 0;
 
     vector<string> *cols = new vector<string>();
-    cols->push_back("trip_id");
     cols->push_back("route_id");
     cols->push_back("service_id");
+    cols->push_back("trip_id");
     cols->push_back("trip_headsign");
     cols->push_back("direction_id");
     cols->push_back("block_id");
     cols->push_back("shape_id");
 
-    status = insert_data(joined, db, "trips", cols);
+    status = insert_data(joined, db, "trip", cols);
 
     delete cols;
 
     return 0;
 }
 
-int BusDataLoader::load_agencies(char const *dir_path, sqlite3 *db) {
+int BusDataLoader::load_agency(char const *dir_path, sqlite3 *db) {
     std::string joined = std::string(dir_path);
     joined.append("/").append(fn_agency);
 
@@ -468,7 +468,7 @@ int BusDataLoader::load_agencies(char const *dir_path, sqlite3 *db) {
     cols->push_back("agency_lang");
     cols->push_back("agency_phone");
 
-    status = insert_data(joined, db, "agencies", cols);
+    status = insert_data(joined, db, "agency", cols);
 
     delete cols;
 
@@ -488,7 +488,7 @@ int BusDataLoader::load_shapes(char const *dir_path, sqlite3 *db) {
     cols->push_back("shape_pt_sequence");
     cols->push_back("shape_dist_traveled");
 
-    status = insert_data(joined, db, "shapes", cols);
+    status = insert_data(joined, db, "shape", cols);
 
     delete cols;
 
@@ -510,7 +510,7 @@ int BusDataLoader::load_data(char const *dir_path, char const *db_path) {
     failureCt += load_routes(dir_path, db);
     failureCt += load_stops(dir_path, db);
     failureCt += load_trips(dir_path, db);
-    failureCt += load_agencies(dir_path, db);
+    failureCt += load_agency(dir_path, db);
     failureCt += load_shapes(dir_path, db);
     failureCt += load_stop_times(dir_path, db);
 
