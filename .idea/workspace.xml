@@ -80,10 +80,19 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="sqlite3.h" pinned="false" current="false" current-in-tab="false">
+            <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/sqlite3.h">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="4633" column="15" selection-start="223393" selection-end="223393" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="BusDataTests.cpp" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/UnitTests/BusDataTests.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="314" column="8" selection-start="9061" selection-end="9061" vertical-scroll-proportion="0.5465587">
+                <state line="85" column="26" selection-start="2024" selection-end="2024" vertical-scroll-proportion="0.9552448">
                   <folding>
                     <element signature="e#98#123#0" expanded="true" />
                   </folding>
@@ -98,7 +107,7 @@
           <file leaf-file-name="BusDataTests.cpp" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/UnitTests/BusDataTests.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="282" column="21" selection-start="8068" selection-end="8068" vertical-scroll-proportion="0.0">
+                <state line="290" column="21" selection-start="8189" selection-end="8189" vertical-scroll-proportion="0.0">
                   <folding>
                     <element signature="e#98#123#0" expanded="true" />
                   </folding>
@@ -369,7 +378,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2888889" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2888889" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="100" y="122" width="1720" height="974" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -433,13 +442,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/UnitTests/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="0" selection-start="501" selection-end="501" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/c++/4.2.1/bits/ostream.tcc">
       <provider selected="true" editor-type-id="text-editor">
         <state line="325" column="24" selection-start="9511" selection-end="9511" vertical-scroll-proportion="0.0" />
@@ -534,9 +536,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/sqlite3.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4633" column="15" selection-start="223393" selection-end="223393" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/UnitTests/BusDataTests.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="314" column="8" selection-start="9061" selection-end="9061" vertical-scroll-proportion="0.5465587">
+        <state line="85" column="26" selection-start="2024" selection-end="2024" vertical-scroll-proportion="0.9552448">
           <folding>
             <element signature="e#98#123#0" expanded="true" />
           </folding>
