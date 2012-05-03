@@ -78,6 +78,14 @@ namespace {
         ASSERT_TRUE(fstream.good());
         fstream.close();
 
+
+        // check table column order
+        sqlite3 *db;
+        sqlite3_open(path, &db);
+
+        sqlite3_close(db);
+
+
         delete loader;
     }
 
@@ -161,8 +169,8 @@ namespace {
         intCol = sqlite3_column_int(stmt, 1); // service_id
         ASSERT_EQ(1, intCol);
 
-        intCol = sqlite3_column_int(stmt, 2); // date
-        ASSERT_EQ(20120406, intCol);
+        textCol = (char const *) sqlite3_column_text(stmt, 2); // date
+        ASSERT_STREQ("20120406", textCol);
 
         intCol = sqlite3_column_int(stmt, 3); // exception_type
         ASSERT_EQ(1, intCol);
@@ -312,7 +320,6 @@ namespace {
         sqlite3_finalize(stmt);
 
 
-        
         // shapes
         sql = "select * from shape";
         sqlite3_prepare_v2(db, sql, strlen(sql), &stmt, NULL);
@@ -341,5 +348,6 @@ namespace {
         sqlite3_close(db);
         delete loader;
     }
+
 
 }

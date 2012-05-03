@@ -104,21 +104,19 @@ int BusDataLoader::create_database(char const *path, const char **error_msg) {
         const char *pzTail;
 
         int numTables = 7;
-        char const *sql[] = {
-                "CREATE TABLE agency (id INTEGER PRIMARY KEY, agency_id INTEGER, agency_name TEXT, agency_url TEXT, agency_timezone TEXT, agency_lang TEXT, agency_phone TEXT)",
+        char const *sql[] = {"CREATE TABLE agency (id INTEGER PRIMARY KEY, agency_id INTEGER, agency_name VARCHAR, agency_url VARCHAR, agency_timezone VARCHAR, agency_lang VARCHAR, agency_phone VARCHAR)",
 
-                "CREATE TABLE calendar_date (id INTEGER PRIMARY KEY, service_id INTEGER, date INTEGER, exception_type INTEGER)",
+                "CREATE TABLE calendar_date (id INTEGER PRIMARY KEY, service_id INTEGER, date VARCHAR, exception_type INTEGER)",
 
-                "CREATE TABLE route (id INTEGER PRIMARY KEY, route_id INTEGER, agency_id INTEGER, route_short_name TEXT, route_long_name TEXT, route_type INTEGER, route_url TEXT, route_color TEXT)",
+                "CREATE TABLE route (id INTEGER PRIMARY KEY, route_id INTEGER, agency_id INTEGER, route_short_name VARCHAR, route_long_name VARCHAR, route_type INTEGER, route_url VARCHAR, route_color VARCHAR)",
 
-                "CREATE TABLE stop_time (id INTEGER PRIMARY KEY, trip_id INTEGER, arrival_time TEXT, departure_time TEXT, stop_id INTEGER, stop_sequence INTEGER, pickup_type INTEGER, drop_off_type INTEGER, shape_dist_traveled REAL)",
+                "CREATE TABLE stop_time (id INTEGER PRIMARY KEY, trip_id INTEGER, arrival_time VARCHAR, departure_time VARCHAR, stop_id INTEGER, stop_sequence INTEGER, pickup_type INTEGER, drop_off_type INTEGER, shape_dist_traveled REAL)",
 
-                "CREATE TABLE stop (id INTEGER PRIMARY KEY, stop_id INTEGER, stop_code INTEGER, stop_name TEXT, stop_desc TEXT, stop_lat REAL, stop_lon REAL, zone_id INTEGER)",
+                "CREATE TABLE stop (id INTEGER PRIMARY KEY, stop_id INTEGER, stop_code INTEGER, stop_name VARCHAR, stop_desc TEXT, stop_lat REAL, stop_lon REAL, zone_id INTEGER)",
 
-                "CREATE TABLE trip (id INTEGER PRIMARY KEY, route_id INTEGER, service_id INTEGER, trip_id INTEGER, trip_headsign TEXT, direction_id INTEGER, block_id TEXT, shape_id INTEGER)",
+                "CREATE TABLE trip (id INTEGER PRIMARY KEY, route_id INTEGER, service_id INTEGER, trip_id INTEGER, trip_headsign VARCHAR, direction_id INTEGER, block_id VARCHAR, shape_id INTEGER)",
 
-                "CREATE TABLE shape (id INTEGER PRIMARY KEY, shape_id INTEGER, shape_pt_lat REAL, shape_pt_lon REAL, shape_pt_sequence INTEGER, shape_dist_traveled REAL)",
-        };
+                "CREATE TABLE shape (id INTEGER PRIMARY KEY, shape_id INTEGER, shape_pt_lat REAL, shape_pt_lon REAL, shape_pt_sequence INTEGER, shape_dist_traveled REAL)",};
 
 //        printf("\ncurr status = %i",status);
         printf("\nCreating %i tables", numTables);
@@ -130,7 +128,7 @@ int BusDataLoader::create_database(char const *path, const char **error_msg) {
             const char *error = sqlite3_errmsg(db);
 
             if (error_msg != NULL) {
-               *error_msg = error;
+                *error_msg = error;
             }
         }
 
@@ -163,7 +161,6 @@ void BusDataLoader::csvline_populate(vector<string> &record, const string& line,
     int linepos = 0;
     int inquotes = false;
     char c;
-    int i;
     int linemax = line.length();
     string curstring;
     record.clear();
@@ -175,29 +172,24 @@ void BusDataLoader::csvline_populate(vector<string> &record, const string& line,
         if (!inquotes && curstring.length() == 0 && c == '"') {
             //beginquotechar
             inquotes = true;
-        }
-        else if (inquotes && c == '"') {
+        } else if (inquotes && c == '"') {
             //quotechar
             if ((linepos + 1 < linemax) && (line[linepos + 1] == '"')) {
                 //encountered 2 double quotes in a row (resolves to 1 double quote)
                 curstring.push_back(c);
                 linepos++;
-            }
-            else {
+            } else {
                 //endquotechar
                 inquotes = false;
             }
-        }
-        else if (!inquotes && c == delimiter) {
+        } else if (!inquotes && c == delimiter) {
             //end of field
             record.push_back(curstring);
             curstring = "";
-        }
-        else if (!inquotes && (c == '\r' || c == '\n')) {
+        } else if (!inquotes && (c == '\r' || c == '\n')) {
             record.push_back(curstring);
             return;
-        }
-        else {
+        } else {
             curstring.push_back(c);
         }
         linepos++;
@@ -235,6 +227,15 @@ bool BusDataLoader::is_number(const std::string& s) {
     return !s.empty() && it == s.end();
 }
 
+
+const char *BusDataLoader::token_for_index(int i) {
+    char token[256];
+    sprintf(token, "@COL%i", i);
+    const char *ret = token;
+    return ret;
+}
+
+
 int BusDataLoader::insert_data(string filePath, sqlite3 *db, string tableName, vector<string> *column_names) {
     bool free_cols = false;
     if (!column_names) {
@@ -244,6 +245,7 @@ int BusDataLoader::insert_data(string filePath, sqlite3 *db, string tableName, v
 
     int retStatus = 0;
     sqlite3_stmt *stmt = NULL;
+    bool stmtCreated = false;
     ifstream file;
     string line;
     char cSql[1024];
@@ -252,6 +254,8 @@ int BusDataLoader::insert_data(string filePath, sqlite3 *db, string tableName, v
     vector<string> comps;
     string colsArg;
     string valsArg;
+    char *transactionErrMsg;
+
 
     unsigned long column_count = column_names->size();
     for (unsigned int i = 0; i < column_count; i++) {
@@ -270,6 +274,7 @@ int BusDataLoader::insert_data(string filePath, sqlite3 *db, string tableName, v
         char statusStr[1024];
         const char *statusMsg;
         string comp;
+        sqlite3_exec(db, "BEGIN TRANSACTION", NULL, NULL, &transactionErrMsg);
         while (file.good()) {
             lineCtr++;
             getline(file, line);
@@ -278,65 +283,58 @@ int BusDataLoader::insert_data(string filePath, sqlite3 *db, string tableName, v
             if (lineCtr > 1 && line.length() > 0) {
                 //comps = split_line(line);
                 csvline_populate(comps, line, ',');
-                valsArg.clear();
 
+                printf("Loading %s...................................%i\r", tableName.c_str(), lineCtr);
+                fflush(stdout);
 
-                if (column_count == comps.size()) {
-                    for (unsigned int i = 0; i < column_count; i++) {
-
-                        comp = comps.at(i);
-//                        valsArg.append(comp);
-
-                        if (comp.length() == 0) {
-                            valsArg.append("\"\"");
-                        } else if (!is_number(comp) && comp.at(0) != '"') {
-                            valsArg.append('"' + comp + '"');
-                        } else {
-                            valsArg.append(comp);
+                if (!stmtCreated) {
+                    valsArg.clear();
+                    for (unsigned int i = 0; i < comps.size(); i++) {
+                        if (i > 0) {
+                            valsArg.append(",");
                         }
-                        if (i < column_count - 1) {
-                            valsArg.append(", ");
-                        }
+                        valsArg.append("?");
                     }
                     sprintf(cSql, "INSERT INTO %s (%s) VALUES(%s)", tableName.c_str(), colsArg.c_str(), valsArg.c_str());
-
-                    sql = string(cSql);
-//                if (tableName[0] == 's') {
-//                    printf("%s\n", cSql);
-//                }
-
-
-                    printf("Loading %s...................................%i\r", tableName.c_str(), lineCtr);
-                    fflush(stdout);
-
-                    sqlite3_prepare_v2(db, sql.c_str(), sql.length(), &stmt, &pzTail);
-                    status = sqlite3_step(stmt);
-                    sqlite3_finalize(stmt);
-
-                    if (status != SQLITE_OK && status < 100) {
-                        retStatus = 1;
-                        statusMsg = sqlite3_errmsg(db);
-                        int ln = lineCtr;
-                        sprintf(statusStr, "line %i: caught error %i: %s", ln, status, statusMsg);
-                        warningLines.push_back(string(statusStr));
-                    }
-                } else {
-                    sprintf(statusStr, "line %i: component count doesnt match column count", lineCtr);
-                    warningLines.push_back(statusStr);
+                    status = sqlite3_prepare_v2(db, cSql, strlen(cSql), &stmt, &pzTail);
+                    stmtCreated = true;
                 }
 
+                string(tmp);
+
+
+                for (unsigned int i = 0; i < comps.size(); i++) {
+                    const char *sqlCmp = comps.at((size_t) i).c_str();
+//                    printf("\nsql cmp: %s", sqlCmp);
+                    sqlite3_bind_text(stmt, i+1, sqlCmp, -1, SQLITE_TRANSIENT);
+                }
+
+                status = sqlite3_step(stmt);
+                sqlite3_clear_bindings(stmt);
+                sqlite3_reset(stmt);
+
+                if (status != SQLITE_OK && status < 100) {
+                    retStatus = 1;
+                    statusMsg = sqlite3_errmsg(db);
+                    int ln = lineCtr;
+                    sprintf(statusStr, "line %i: caught error %i: %s", ln, status, statusMsg);
+                    warningLines.push_back(string(statusStr));
+                }
             }
 
         }
 
+        sqlite3_finalize(stmt);
+        sqlite3_exec(db, "END TRANSACTION", NULL, NULL, &transactionErrMsg);
+        stmtCreated = false;
+
         printf("Loading %s...................................done\n", tableName.c_str());
 
-        for (int j = 0; j < warningLines.size(); j++) {
+        for (unsigned int j = 0; j < warningLines.size(); j++) {
             printf("    WARN: %s\n", warningLines.at(j).c_str());
         }
         printf("\n");
     }
-
     if (free_cols) {
         delete column_names;
     }
@@ -505,7 +503,7 @@ int BusDataLoader::load_data(char const *dir_path, char const *db_path) {
     int status = 0;
 
     int failureCt = 0;
-    
+
     failureCt += load_calendar_dates(dir_path, db);
     failureCt += load_routes(dir_path, db);
     failureCt += load_stops(dir_path, db);
