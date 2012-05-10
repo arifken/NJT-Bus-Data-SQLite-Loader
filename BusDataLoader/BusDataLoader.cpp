@@ -228,14 +228,6 @@ bool BusDataLoader::is_number(const std::string& s) {
 }
 
 
-const char *BusDataLoader::token_for_index(int i) {
-    char token[256];
-    sprintf(token, "@COL%i", i);
-    const char *ret = token;
-    return ret;
-}
-
-
 int BusDataLoader::insert_data(string filePath, sqlite3 *db, string tableName, vector<string> *column_names) {
     bool free_cols = false;
     if (!column_names) {
@@ -306,7 +298,7 @@ int BusDataLoader::insert_data(string filePath, sqlite3 *db, string tableName, v
                 for (unsigned int i = 0; i < comps.size(); i++) {
                     const char *sqlCmp = comps.at((size_t) i).c_str();
 //                    printf("\nsql cmp: %s", sqlCmp);
-                    sqlite3_bind_text(stmt, i+1, sqlCmp, -1, SQLITE_TRANSIENT);
+                    sqlite3_bind_text(stmt, i + 1, sqlCmp, -1, SQLITE_TRANSIENT);
                 }
 
                 status = sqlite3_step(stmt);
@@ -493,6 +485,31 @@ int BusDataLoader::load_shapes(char const *dir_path, sqlite3 *db) {
     return status;
 }
 
+int BusDataLoader::create_indices(sqlite3 *db) {
+    const char *sql;
+    char errMsg[1024];
+
+    sql = "CREATE INDEX idx_st on stop_time(stop_id)";
+    if (sqlite3_exec(db, sql, NULL, NULL, (char **) &errMsg) != SQLITE_OK) {
+        printf("\nError creating indices: %s", errMsg);
+        return -1;
+    }
+
+    sql = "CREATE INDEX idx_trip on trip(trip_id);";
+    if (sqlite3_exec(db, sql, NULL, NULL, (char **) &errMsg) != SQLITE_OK) {
+        printf("\nError creating indices: %s", errMsg);
+        return -1;
+    }
+
+    sql = "CREATE INDEX idx_cd on calendar_date(date, service_id)";
+    if (sqlite3_exec(db, sql, NULL, NULL, (char **) &errMsg) != SQLITE_OK) {
+        printf("\nError creating indices: %s", errMsg);
+        return -1;
+    }
+
+    return 0;
+}
+
 
 int BusDataLoader::load_data(char const *dir_path, char const *db_path) {
 
@@ -512,11 +529,19 @@ int BusDataLoader::load_data(char const *dir_path, char const *db_path) {
     failureCt += load_shapes(dir_path, db);
     failureCt += load_stop_times(dir_path, db);
 
-    sqlite3_close(db);
 
     if (failureCt != 0) {
         status = 1;
+        printf("\nData load failed with %i errors.",failureCt);
+    } else {
+        printf("\ncreating indices............................");
+        status = create_indices(db);
+        printf("done\n\n");
     }
+
+    sqlite3_close(db);
+
+
     return status;
 
 }

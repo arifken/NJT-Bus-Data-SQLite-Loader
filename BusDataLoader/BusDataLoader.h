@@ -53,7 +53,7 @@ class BusDataLoader {
 
     int load_shapes(char const *dir_path, sqlite3 *db);
 
-    const char* token_for_index(int i);
+    int create_indices(sqlite3 *db);
 
 };
 

@@ -123,7 +123,6 @@ namespace {
 
         ASSERT_EQ(status, 0);
 
-
         sqlite3_open(dbPath, &db);
 
         //------------------- check counts -------------------------
