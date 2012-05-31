@@ -486,25 +486,26 @@ int BusDataLoader::load_shapes(char const *dir_path, sqlite3 *db) {
 }
 
 int BusDataLoader::create_indices(sqlite3 *db) {
-    const char *sql;
     char errMsg[1024];
 
-    sql = "CREATE INDEX idx_st on stop_time(stop_id)";
-    if (sqlite3_exec(db, sql, NULL, NULL, (char **) &errMsg) != SQLITE_OK) {
-        printf("\nError creating indices: %s", errMsg);
-        return -1;
-    }
+    int indexCt = 5;
+    const char *createSql[] = {
+            "CREATE INDEX idx_st_stop_id on stop_time(stop_id)",
+            "CREATE INDEX idx_st_trip_id on stop_time(trip_id)",
+            "CREATE INDEX idx_st_departure_time on stop_time(departure_time)",
+            "CREATE INDEX idx_t_trip_id on trip(trip_id)",
+            "CREATE INDEX idx_cd_date on calendar_date(date)"
+    };
 
-    sql = "CREATE INDEX idx_trip on trip(trip_id);";
-    if (sqlite3_exec(db, sql, NULL, NULL, (char **) &errMsg) != SQLITE_OK) {
-        printf("\nError creating indices: %s", errMsg);
-        return -1;
-    }
+    for (int i = 0; i < indexCt; i++) {
+        const char *sql = createSql[i];
 
-    sql = "CREATE INDEX idx_cd on calendar_date(date, service_id)";
-    if (sqlite3_exec(db, sql, NULL, NULL, (char **) &errMsg) != SQLITE_OK) {
-        printf("\nError creating indices: %s", errMsg);
-        return -1;
+        printf("%s............................", sql);
+        if (sqlite3_exec(db, sql, NULL, NULL, (char **) &errMsg) != SQLITE_OK) {
+            printf("\nError creating index [%s]: %s", sql, errMsg);
+            return -1;
+        }
+        printf("done\n\n");
     }
 
     return 0;
@@ -532,11 +533,9 @@ int BusDataLoader::load_data(char const *dir_path, char const *db_path) {
 
     if (failureCt != 0) {
         status = 1;
-        printf("\nData load failed with %i errors.",failureCt);
+        printf("\nData load failed with %i errors.", failureCt);
     } else {
-        printf("\ncreating indices............................");
         status = create_indices(db);
-        printf("done\n\n");
     }
 
     sqlite3_close(db);
