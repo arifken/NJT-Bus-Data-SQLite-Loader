@@ -1,14 +1,14 @@
 #include "BusDataLoader.h"
 
 
-void usage() {
-    std::cout << "\nUsage: $ ./loader [path to bus data directory] [output sqlite directory]\n";
+void usage(const char *cmd) {
+    printf("\nUsage: $ %s [path to bus data directory] [output sqlite directory]\n\n", cmd);
 }
 
 int main(int argc, const char *argv[]) {
 
     if (argc != 3) {
-        usage();
+        usage(argv[0]);
         return 0;
     }
 
